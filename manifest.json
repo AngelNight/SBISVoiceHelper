@@ -1,0 +1,32 @@
+{
+   "manifest_version": 2,
+   "name": "SBIS Voice Helper",
+   "version": "1.0",
+   "icons": {
+      "16": "mic-icon-128.png",
+      "48": "mic-icon-128.png",
+      "128": "mic-icon-128.png"
+   },
+   "browser_action": {
+      "default_title": "SBIS Voice Helper",
+      "default_icon": "mic-icon-128.png"
+   },
+   "content_scripts": [
+      {
+         "matches": ["https://*.sbis.ru/*", "https://*.tensor.ru/*"],
+         "css": [],
+         "js": [
+            "app.js",
+            "webspeechkit/recorder.js",
+            "webspeechkit/textline.js",
+            "webspeechkit/equalizer.js",
+            "webspeechkit/recognizer.js",
+            "webspeechkit/recorderWorker.js",
+            "webspeechkit/speechrecognition.js"
+         ]
+      }
+   ],
+   "permissions": [
+      "tabs"
+   ]
+}
