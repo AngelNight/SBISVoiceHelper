@@ -1,0 +1,13 @@
+#logoPtica {
+   background-image: none;
+   background-color: #E9EBEC;
+   border-radius: 4px;
+   min-width: 32px !important;
+   height: 32px !important;
+   padding: 4px;
+   cursor: pointer;
+}
+
+#logoPtica :hover {
+   background-color: #ffffff;
+}
