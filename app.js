@@ -2,8 +2,33 @@ var bird = document.getElementById('logoPtica');
 if(bird){
    bird.className += 'bird icon-32 icon-Microphone icon-primary';
    bird.title = 'SBIS Voice Helper';
+
+   // Google Web Speech API
+   var rec = new webkitSpeechRecognition();
+   rec.continuous = true;
+   rec.interimResults = true;
+   rec.lang = 'ru';
+   rec.onstart = function () {
+      rec.isRunning = true;
+   };
+   rec.onend = function () {
+      rec.isRunning = false;
+   };
+   rec.onresult = function (event) {
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+         if (event.results[i].isFinal) {
+            console.log(event.results[i][0].transcript);
+         }
+      }
+   };
+
    // так работает в ie8
    bird.onclick = function(){
-      alert('SBIS Voice Helper');
+      if( rec.isRunning ) {
+         rec.stop();
+      }
+      else {
+         rec.start();
+      }
    };
 }
