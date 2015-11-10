@@ -2,7 +2,8 @@ var bird = document.getElementById('logoPtica');
 if(bird){
    bird.className += 'bird icon-32 icon-Microphone icon-primary';
    bird.title = 'SBIS Voice Helper';
-   bird.addEventListener("click", function(){
+   // так работает в ie8
+   bird.onclick = function(){
       alert('SBIS Voice Helper');
-   });
+   };
 }
