@@ -4,7 +4,8 @@ if(bird){
    bird.title = 'SBIS Voice Helper';
 
    // Google Web Speech API
-   var rec = new webkitSpeechRecognition();
+   var rec = new webkitSpeechRecognition(),
+         sHadler = new SpeechHandler();
    rec.continuous = true;
    rec.interimResults = true;
    rec.lang = 'ru';
@@ -17,7 +18,7 @@ if(bird){
    rec.onresult = function (event) {
       for (var i = event.resultIndex; i < event.results.length; ++i) {
          if (event.results[i].isFinal) {
-            console.log(event.results[i][0].transcript);
+            sHadler.parse(event.results[i][0].transcript);
          }
       }
    };

@@ -16,13 +16,8 @@
          "matches": ["https://*.sbis.ru/*", "https://*.tensor.ru/*"],
          "css": ["app.css"],
          "js": [
-            "app.js",
-            "webspeechkit/recorder.js",
-            "webspeechkit/textline.js",
-            "webspeechkit/equalizer.js",
-            "webspeechkit/recognizer.js",
-            "webspeechkit/recorderWorker.js",
-            "webspeechkit/speechrecognition.js"
+            "SpeechHandler.js",
+            "app.js"
          ]
       }
    ],
