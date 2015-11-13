@@ -18,8 +18,28 @@ var SpeechHandler = function() {
             this._log(arguments);
          },
          'найти сотрудника': function () {
-            this._log(arguments);
-         },
+              this._log(arguments);
+
+              console.log('Ищу');
+
+              var obj = new $ws.proto.BLObject("Персонал");
+
+              obj.query('СписокПерсонала',{'СтрокаПоиска': 'Демо','Разворот':'С разворотом','ВидДерева':'Только листья'})
+                  .addCallback(function(response){
+                      console.log(response);
+
+                      if(response._data.length > 0){
+
+                          var row = response._data[0];
+
+                          console.log('Мобильный телефон '+row[1]+' '+row[6]);
+
+                      } else {
+                          console.log('Сотрудник не найден.');
+                      }
+                  });
+
+          },
          'прочитать новость': function () {
             this._log(arguments);
          },
