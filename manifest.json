@@ -11,6 +11,7 @@
       "default_title": "SBIS Voice Helper",
       "default_icon": "mic-icon-128.png"
    },
+   "options_page": "options.html",
    "content_scripts": [
       {
          "matches": ["https://*.sbis.ru/*", "https://*.tensor.ru/*"],
@@ -21,7 +22,13 @@
          ]
       }
    ],
+   "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
    "permissions": [
-      "tabs"
+      "tabs",
+	  "tts"
    ]
 }
