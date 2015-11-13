@@ -48,7 +48,6 @@ var SpeechHandler = function() {
    };
 };
 
-
 function declOfTime()
 {
    var date = new Date();
