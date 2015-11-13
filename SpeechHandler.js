@@ -22,22 +22,56 @@ var SpeechHandler = function() {
 
               console.log('Ищу');
 
-              var obj = new $ws.proto.BLObject("Персонал");
+//              var obj = new $ws.proto.BLObject("Персонал");
+//              obj.query('СписокПерсонала',{'СтрокаПоиска': 'Демо','Разворот':'С разворотом','ВидДерева':'Только листья'})
+//                  .addCallback(function(response){
+//                      console.log(response);
+//
+//                      if(response._data.length > 0){
+//
+//                          var row = response._data[0];
+//
+//                          console.log('Мобильный телефон '+row[1]+' '+row[6]);
+//
+//                      } else {
+//                          console.log('Сотрудник не найден.');
+//                      }
+//                  });
 
-              obj.query('СписокПерсонала',{'СтрокаПоиска': 'Демо','Разворот':'С разворотом','ВидДерева':'Только листья'})
-                  .addCallback(function(response){
-                      console.log(response);
+             jQuery.ajax({
+                 url:'https://fix-online.sbis.ru/service/',
+                 data: JSON.stringify({
+                     id:1,
+                     jsonrpc: "2.0",
+                     protocol: 3,
+                     method: "Персонал.СписокПерсонала",
+                     params:{
+                         ДопПоля: [],
+                         Сортировка: null,
+                         Навигация: null,
+                         Фильтр: {
+                             d: ["Демо", "С разворотом", "Только листья"],
+                             s:[{n: "СтрокаПоиска", t: "Строка"}, {n: "Разворот", t: "Строка"}, {n: "ВидДерева", t: "Строка"}]
+                         }
+                     }
+                 }),success: function(response){
 
-                      if(response._data.length > 0){
+                     //console.log('response:',response); //раскоментируй, чтобы видеть ответ
 
-                          var row = response._data[0];
+                     if(response.result.d.length > 0){
+
+                          var row = response.result.d[0];
+
+                         //console.log(row); //раскоментируй
 
                           console.log('Мобильный телефон '+row[1]+' '+row[6]);
 
                       } else {
                           console.log('Сотрудник не найден.');
                       }
-                  });
+
+
+                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 
           },
          'прочитать новость': function () {
@@ -56,7 +90,7 @@ var SpeechHandler = function() {
 
       parse: function(text){
          text = (text.toLowerCase()).trim();
-         if(DEBUG) Say(text);
+         //if(DEBUG) Say(text);
          for( var handlerName in this._handlers ){
             if( text.indexOf(handlerName) + 1 ){
                this._log(handlerName);
