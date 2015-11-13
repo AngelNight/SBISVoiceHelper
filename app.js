@@ -9,7 +9,7 @@ function Say(utterance, options, callback) {
 	chrome.runtime.sendMessage({utterance,options,callback}, function() {});
   else
     chrome.runtime.sendMessage({utterance,options}, function() {});
- 
+
 }
 
 var bird = $('logoPtica');
@@ -34,6 +34,18 @@ if(bird){
 	  Say("До скорой встречи, хозяин");
       rec.isRunning = false;
    };
+
+   rec.onerror = function(event) {
+      if (event.error == 'no-speech') {
+         Say("Пожалуйста, не молчите. Проверьте настройки микрофона");
+      }
+      if (event.error == 'audio-capture') {
+         Say("Проблемы с записью голоса");
+      }
+
+   };
+
+
    rec.onresult = function (event) {
       for (var i = event.resultIndex; i < event.results.length; ++i) {
          if (event.results[i].isFinal) {
@@ -42,13 +54,4 @@ if(bird){
       }
    };
 
-   // так работает в ie8
-   bird.onclick = function(){
-      if( rec.isRunning ) {
-         rec.stop();
-      }
-      else {
-         rec.start();
-      }
-   };
 }
