@@ -1,3 +1,4 @@
+//asd
 var bird = document.getElementById('logoPtica');
 if(bird){
    bird.className += 'bird icon-32 icon-Microphone icon-primary';
