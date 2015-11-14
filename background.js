@@ -1,7 +1,18 @@
-chrome.runtime.onMessage.addListener(function(request) {
-	if(request.callback){
-		chrome.tts.speak(request.utterance,request.options,request.callback);
-	}else{
-		chrome.tts.speak(request.utterance,request.options);
-	}
+chrome.runtime.onMessage.addListener(function(request,sender,callback) {
+
+    //callback();
+    chrome.tts.speak(request[0],request[1],callback);
+
+//    chrome.tts.speak("Hello, world!", {
+//        requiredEventTypes: ['end'],
+//        onEvent: function(event) {
+//            if(event.type === 'end') {
+//                alert('Speech ended.');
+//            }
+//        }
+//    },function(){
+//        alert('конец');
+//    });
+
 });
+
