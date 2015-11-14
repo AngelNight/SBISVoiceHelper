@@ -99,6 +99,11 @@ var SpeechHandler = function() {
             }
 
          },
+          'перейти на главную': function (text) {
+
+              Say('Перехожу на главную');
+              document.location.href = getDomain();
+          },
          'найти сотрудника': function (text) {
 
              if(!text) return;
