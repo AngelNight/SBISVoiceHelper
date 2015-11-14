@@ -329,18 +329,21 @@ var SpeechHandler = function() {
 };
 
 function companysearch(text) {
+   var text = text.trim();
    var xhr = new XMLHttpRequest();
-   var json_text = JSON.stringify({"jsonrpc":"2.0","protocol":3,"method":"Контрагент.СписокОбщийИСПП",
-      "params":{"ДопПоля":[],"Фильтр":{"d":[true,text,null,"-1"],
-         "s":[{"n":"ИскатьВФилиалах","t":"Логическое"},{"n":"Реквизиты","t":"Строка"},
-            {"n":"Состояние","t":"Строка"},{"n":"СтатусКонтрагента","t":"Строка"}]},
-         "Сортировка":{"s":[{"n":"n","t":"Строка"},{"n":"o","t":"Логическое"},
-            {"n":"l","t":"Логическое"}],"d":[["Выручка",true,false]]},
-         "Навигация":{"s":[{"n":"Страница","t":"Число целое"},
-            {"n":"РазмерСтраницы","t":"Число целое"},{"n":"ЕстьЕще","t":"Логическое"}],
-            "d":[0,20,true]}},"id":1});
+   var json_text = JSON.stringify(
+       {"jsonrpc":"2.0","protocol":3,"method":"Контрагент.СписокОбщийИСПП",
+           "params":{"ДопПоля":[],"Фильтр":{"d":[true,text,"1","1"],
+           "s":[{"n":"ИскатьВФилиалах","t":"Логическое"},{"n":"Реквизиты","t":"Строка"},
+           {"n":"Состояние","t":"Строка"},{"n":"СтатусКонтрагента","t":"Строка"}]},
+           "Сортировка":{"s":[{"n":"n","t":"Строка"},{"n":"o","t":"Логическое"},
+           {"n":"l","t":"Логическое"}],"d":[["Выручка",true,false]]},
+           "Навигация":{"s":[{"n":"Страница","t":"Число целое"},
+           {"n":"РазмерСтраницы","t":"Число целое"},{"n":"ЕстьЕще","t":"Логическое"}],
+           "d":[0,20,true]}},"id":1}
+        );
 
-   xhr.open('POST', getDomain()+'/sbis-rpc-service300.dll', true);
+   xhr.open('POST', getDomain()+'/service/sbis-rpc-service300.dll', true);
    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
    xhr.send(json_text);
 
@@ -369,7 +372,7 @@ function companysearch(text) {
             'special': information[27]
          };
          var result_str = "По вашему запросу найдена организация " + result.name + " в городе " + result.city
-             + "основаная " + result.dob() + " с директором " + result.director + " и специализацией " + result.special;
+             + " основаная " + result.dob() + " с директором " + result.director + " и специализацией " + result.special;
          Say(result_str);
       }
 
