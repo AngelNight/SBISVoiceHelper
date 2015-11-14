@@ -30,8 +30,44 @@ var SpeechHandler = function() {
          'сколько времени': function (){
             Say(declOfTime());
          },
-         'отправить сообщение': function () {
-            alert("отправить сообщение");
+         'отправить сообщение': function (p) {
+             if(!p) return;
+
+             var tmpArg = p.split(' '),
+                 gName = [tmpArg[0], tmpArg[1]].join(' '),
+                 text = p.replace(name,'').trim();
+
+             findUserByName(gName ,function(response) {
+
+                 if(response)
+                 {
+                     var id = response[9],
+                         name = response[1];
+
+                     jQuery.ajax({
+                         url: 'https://fix-online.sbis.ru/service/',
+                         data: JSON.stringify({
+                             id: 1,
+                             jsonrpc: "2.0",
+                             protocol: 3,
+                             method: "Сообщение.Отправить",
+                             params: {
+                                 Диалог: null,
+                                 Документ: null,
+                                 ПолучателиКлиенты: [3],
+                                 ПолучателиЛица: [id],
+                                 Сообщение: null,
+                                 Текст: text,
+                                 Файлы: []
+                             }
+                         }), success: function (response) {
+                             Say('Сообщение отправлено ' + name + '   Само сообщение ' + text);
+                         }, dataType: "json", type: "post", contentType: 'application/json; charset=utf-8'
+                     });
+                 }
+                 else
+                     Say("Пользователь " + gName + " не найден!");
+             });
          },
          'перейти в': function (text) {
 
@@ -92,7 +128,117 @@ var SpeechHandler = function() {
           },
          'прочитать новость': function () {
             this._log(arguments);
+            console.log('Ищу');
+             jQuery.ajax({
+                 url:'https://fix-online.sbis.ru/service/',
+                 data: JSON.stringify({
+                     id:1,
+                     jsonrpc: "2.0",
+                     protocol: 3,
+                     method: "Новость.ПрочитатьНовость",
+                     params:{
+                        ИдО: 1526173,
+                        ИмяМетода: "Новость.СписокДекларативный"
+                         }
+                     
+                 }),success: function(response){
+                     
+
+                     console.log('response:',response); //раскоментируй, чтобы видеть ответ
+                     
+                      //var news_div = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+                      //news_div.getAttribute('news_id')
+
+                     if(response.result.d.length > 0){
+
+                          var row =response.result.d[36];
+
+                          console.log(row);
+                          Say(row);
+
+                      } else {
+                          console.log('Новость не найдена');
+                      }
+
+
+                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
          },
+
+          'мне нравится': function(){
+             this._log(arguments);
+
+           /* var div_news = document.getElementsByClassName('news_as_link ellipsisStartPage');
+            jQuery(div_news).find(".news_icons");
+            jQuery(div_news).click();*/
+            console.log('Ищу');
+             jQuery.ajax({
+                 url:'https://fix-online.sbis.ru/service/',
+                 data: JSON.stringify({
+                     id:1,
+                     jsonrpc: "2.0",
+                     protocol: 3,
+                     method: "Новость.ПонравиласьНовостьВОнлайне",
+                     params:{
+                        ИдО: "1526173"
+                         }
+                     
+                 }),success: function(response){
+                     
+
+                     console.log('response:',response); //раскоментируй, чтобы видеть ответ
+                     
+                    var ans = 'Мне нравится ';
+                    Say(ans);
+
+
+                   var div_news = jQuery('.news_as_link.ellipsisStartPage');
+                    jQuery(div_news[0]).find(".icon-ThumbUp2").click();
+
+                    
+
+                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+
+         },
+
+
+
+         'плохо': function(){
+             this._log(arguments);
+
+           
+          
+            console.log('Ищу');
+             jQuery.ajax({
+                 url:'https://fix-online.sbis.ru/service/',
+                 data: JSON.stringify({
+                     id:1,
+                     jsonrpc: "2.0",
+                     protocol: 3,
+                     method: "Новость.НеПонравиласьНовостьВОнлайне",
+                     params:{
+                        ИдО: "1526173"
+                         }
+                     
+                 }),success: function(response){
+                     
+
+                     console.log('response:',response); //раскоментируй, чтобы видеть ответ
+                     
+                    var ans = 'Мне не нравится ';
+                    Say(ans);
+
+
+                    var div_news = jQuery('.news_as_link.ellipsisStartPage');
+                    jQuery(div_news[0]).find(".icon-ThumbUp2.icon-error").click();
+
+                    
+
+                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+
+         },
+
+
+
          'создать задачу': function () {
             this._log(arguments);
          },
