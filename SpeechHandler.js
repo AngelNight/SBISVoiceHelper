@@ -264,6 +264,19 @@ var SpeechHandler = function() {
 
          },
 
+         'открой комментарии':function(){
+
+                  var div_comm = jQuery('.news_as_link.ellipsisStartPage');
+                  jQuery(div_comm[0]).find(".root_title").click();
+
+         },
+
+         'закрой комментарии':function(){
+                jQuery(".sbisname-window-title-close").click();
+
+         },
+
+
          'отправить комментарий':function(p){
           if(!p) return;
            var text1 = p.replace(name,'').trim();
