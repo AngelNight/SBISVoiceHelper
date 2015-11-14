@@ -209,8 +209,9 @@ var SpeechHandler = function() {
                     Say(ans);
 
 
-                   var div_news = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news[0]).find(".news_icons").click();
+                   var div_news = jQuery('.news_icons');
+                    jQuery(div_news[0]).find(".icon_ThumbUp2.icon_done").click();
+                    
 
                     
 
