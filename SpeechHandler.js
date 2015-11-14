@@ -195,7 +195,9 @@ var SpeechHandler = function() {
           'мне нравится': function(){
              this._log(arguments);
 
-           
+           var news_div4 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+           var id_n2 = news_div4.getAttribute('news_id');
+
             console.log('Ищу');
              jQuery.ajax({
                  url:getDomain()+'service/',
@@ -205,7 +207,7 @@ var SpeechHandler = function() {
                      protocol: 3,
                      method: "Новость.ПонравиласьНовостьВОнлайне",
                      params:{
-                        ИдО: "1526173"
+                        ИдО: id_n2
                          }
                      
                  }),success: function(response){
@@ -229,8 +231,9 @@ var SpeechHandler = function() {
          'плохая новость': function(){
              this._log(arguments);
 
-           
-          
+           var news_div3 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+            var id_n1 = news_div3.getAttribute('news_id'); 
+
             console.log('Ищу');
              jQuery.ajax({
                  url:getDomain()+'service/',
@@ -240,7 +243,7 @@ var SpeechHandler = function() {
                      protocol: 3,
                      method: "Новость.НеПонравиласьНовостьВОнлайне",
                      params:{
-                        ИдО: "1526173"
+                        ИдО: id_n1
                          }
                      
                  }),success: function(response){
