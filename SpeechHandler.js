@@ -74,7 +74,7 @@ var SpeechHandler = function() {
                                  Файлы: []
                              }
                          }), success: function (response) {
-                             Say('Сообщение отправлено ' + name + '   Само сообщение ' + text);
+                             Say('Сообщение с текстом ' + text + ' отправлено ' + name);
                          }, dataType: "json", type: "post", contentType: 'application/json; charset=utf-8'
                      });
                  }
