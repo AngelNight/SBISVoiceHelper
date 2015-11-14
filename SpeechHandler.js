@@ -31,10 +31,6 @@ var SpeechHandler = function() {
           'ты здесь': function(text) {
               Say('Для вас всегда');
           },
-          'привет': function(text) {
-              console.log('hi!');
-              allow = true;
-          },
          'компания': function (text){
             companysearch(text);
          },
