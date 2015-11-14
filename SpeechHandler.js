@@ -1,6 +1,9 @@
 var DEBUG = 0,
     allow = true;
 
+// ключевые фразы помеченные знаком /*!DANGER!*/
+// не распознаются или распознаются с ошибками
+
 var pageUrls = {
     'документы': 'edo.html',
     'задачи': 'mydoc.html',
@@ -49,7 +52,7 @@ var SpeechHandler = function() {
 
              var tmpArg = p.split(' '),
                  gName = [tmpArg[0], tmpArg[1]].join(' '),
-                 text = p.replace(name,'').trim();
+                 text = p.replace(gName,'').trim();
 
              findUserByName(gName ,function(response) {
 
