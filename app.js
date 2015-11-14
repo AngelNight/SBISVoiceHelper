@@ -30,11 +30,11 @@ if(bird){
    rec.interimResults = true;
    rec.lang = 'ru';
    rec.onstart = function () {
-      //Say("Привет, хозяин");
+      Say("Привет, господин");
 	  rec.isRunning = true;
    };
    rec.onend = function () {
-	  //Say("До скорой встречи, хозяин");
+	  Say("До скорой встречи, господин");
       rec.isRunning = false;
    };
    rec.onresult = function (event) {
