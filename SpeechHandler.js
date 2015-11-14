@@ -207,7 +207,7 @@ var SpeechHandler = function() {
 
 
 
-         'плохо': function(){
+         'плохая новость': function(){
              this._log(arguments);
 
            
@@ -239,6 +239,29 @@ var SpeechHandler = function() {
                     
 
                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+
+         },
+
+         'отправить комментарий':function(p){
+          if(!p) return;
+           var text1 = p.replace(name,'').trim();
+
+           jQuery.ajax({
+                         url: 'https://fix-online.sbis.ru/service/',
+                         data: JSON.stringify({
+                             id: 1,
+                             jsonrpc: "2.0",
+                             protocol: 3,
+                             method: "НовостьКомментарий.СоздатьКомментарий",
+                             params: {
+                                GUID: "466ca8fb-d88e-4125-8ff1-d03f7be8bd5b",
+                                ИдНовости: "1526173",
+                                Текст: text1
+                             }
+                         }), success: function (response) {
+                             Say(text1);
+                         }, dataType: "json", type: "post", contentType: 'application/json; charset=utf-8'
+                     });
 
          },
 
