@@ -153,8 +153,13 @@ var SpeechHandler = function() {
               });
 
           },
-         'прочитай новость': function () {
+         'прочитай новости': function () {
             this._log(arguments);
+
+            var news_div2 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+            var id_n = news_div2.getAttribute('news_id');
+
+
             console.log('Ищу');
              jQuery.ajax({
                  url:'https://fix-online.sbis.ru/service/',
@@ -164,7 +169,7 @@ var SpeechHandler = function() {
                      protocol: 3,
                      method: "Новость.ПрочитатьНовость",
                      params:{
-                        ИдО: 1526173,
+                        ИдО: id_n,
                         ИмяМетода: "Новость.СписокДекларативный"
                          }
                      
