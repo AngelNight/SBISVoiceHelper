@@ -500,6 +500,6 @@ function createGUID() {
 }
 
 function callUser(userId){
-    var url = '/webrtc/static/window.html#room=' + createGUID() + '&{"faceId":'+userId+',"clientId":3}&video=true';
+    var url = '/webrtc/static/window.html#room=' + createGUID() + '&toInvite={"faceId":'+userId+',"clientId":3}&video=true';
     window.open(url, '', 'width=1110,height=832,top=52,left=405,target=window');
 }
