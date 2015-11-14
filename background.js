@@ -1,18 +1,19 @@
-chrome.runtime.onMessage.addListener(function(request,sender,callback) {
+chrome.runtime.onMessage.addListener(function(utterance,sender,callback) {
 
-    //callback();
-    chrome.tts.speak(request[0],request[1],callback);
+    if(!sender.tab.id) return;
 
-//    chrome.tts.speak("Hello, world!", {
-//        requiredEventTypes: ['end'],
-//        onEvent: function(event) {
-//            if(event.type === 'end') {
-//                alert('Speech ended.');
-//            }
-//        }
-//    },function(){
-//        alert('конец');
-//    });
+    chrome.tts.speak(utterance, {
+        voiceName:"Google русский",
+        requiredEventTypes: ['end','error'],
+        onEvent: function(event) {
+            if(event.type === 'end') {
+                chrome.tabs.sendMessage(sender.tab.id, {action: "open_dialog_box"}, function(response) {});
+            }
+            if (event.type == 'error') {
+                alert('Error: ' + event.errorMessage);
+            }
+        }
+    },callback);
 
 });
 

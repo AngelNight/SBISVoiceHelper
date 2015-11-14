@@ -1,20 +1,24 @@
-function $(id){
-	return document.getElementById(id);
-}
-
-function Say(utterance, options, callback) {
-  if(!options) options = {voiceName:"Google русский"};
+function Say(utterance, callback) {
   console.log('Говорю: ' + utterance);
 
   if (!callback){
-	callback = function(){};
+	callback = function(){ };
   }
 
-  chrome.runtime.sendMessage([utterance,options], callback);
+  chrome.runtime.sendMessage(utterance, callback);
+
+    console.log('stop recording');
+    rec.stop();
 
 }
 
-var bird = $('logoPtica');
+chrome.runtime.onMessage.addListener(function(request,sender,callback2) {
+    console.log('start recording');
+    rec.start();
+});
+
+
+var bird = document.getElementById('logoPtica');
 if(bird){
    bird.className += 'bird icon-32 icon-Microphone icon-primary';
    bird.title = 'SBIS Voice Helper';

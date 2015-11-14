@@ -59,8 +59,6 @@ var SpeechHandler = function() {
 
                      var row = response.result.d[0];
 
-                     //console.log(row); //раскоментируй
-
                      if(row[6]){
                          console.log('Мобильный телефон '+row[1]+' '+row[6]);
 
@@ -78,7 +76,29 @@ var SpeechHandler = function() {
           'внутренний номер': function () {
               this._log(arguments);
 
+              if(arguments.length == 0) return;
+              if(arguments[0] == '') return;
 
+              findUserByName(arguments[0].trim(),function(response){
+
+                  console.log(response);
+
+                  if(response.result.d.length > 0){
+
+                      var row = response.result.d[0];
+
+                      if(row[5]){
+                          console.log('Мобильный телефон '+row[1]+' '+row[5]);
+
+                          Say('Внутренний номер '+row[1]+' '+row[5]);
+                      } else {
+                          Say('Внутренний номер сотрудника '+row[1]+' не найден.');
+                      }
+
+                  } else {
+                      console.log('Сотрудник не найден.');
+                  }
+              });
 
           },
          'прочитать новость': function () {
