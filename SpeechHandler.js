@@ -28,10 +28,6 @@ var pageUrls = {
 var SpeechHandler = function() {
    return {
       _handlers : {
-          'привет': function(text) {
-              console.log('hi!');
-              allow = true;
-          },
          'компания': function (text){
             companysearch(text);
          },
@@ -62,7 +58,7 @@ var SpeechHandler = function() {
                          name = response[1];
 
                      jQuery.ajax({
-                         url: 'https://fix-online.sbis.ru/service/',
+                         url: getDomain()+'service/',
                          data: JSON.stringify({
                              id: 1,
                              jsonrpc: "2.0",
@@ -154,7 +150,7 @@ var SpeechHandler = function() {
             this._log(arguments);
             console.log('Ищу');
              jQuery.ajax({
-                 url:'https://fix-online.sbis.ru/service/',
+                 url:getDomain()+'service/',
                  data: JSON.stringify({
                      id:1,
                      jsonrpc: "2.0",
@@ -194,7 +190,7 @@ var SpeechHandler = function() {
            
             console.log('Ищу');
              jQuery.ajax({
-                 url:'https://fix-online.sbis.ru/service/',
+                 url:getDomain()+'service/',
                  data: JSON.stringify({
                      id:1,
                      jsonrpc: "2.0",
@@ -229,7 +225,7 @@ var SpeechHandler = function() {
           
             console.log('Ищу');
              jQuery.ajax({
-                 url:'https://fix-online.sbis.ru/service/',
+                 url:getDomain()+'service/',
                  data: JSON.stringify({
                      id:1,
                      jsonrpc: "2.0",
@@ -262,7 +258,7 @@ var SpeechHandler = function() {
            var text1 = p.replace(name,'').trim();
 
            jQuery.ajax({
-                         url: 'https://fix-online.sbis.ru/service/',
+                         url: getDomain()+'service/',
                          data: JSON.stringify({
                              id: 1,
                              jsonrpc: "2.0",
