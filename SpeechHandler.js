@@ -2,7 +2,17 @@ var DEBUG = 1;
 
 var pageUrls = {
    'документы': 'https://fix-online.sbis.ru/edo.html',
-   'задачи': 'https://fix-online.sbis.ru/mydoc.html'
+   'задачи': 'https://fix-online.sbis.ru/mydoc.html',
+   'бизнес': 'https://fix-online.sbis.ru/contragents.html',
+    'учет': 'https://fix-online.sbis.ru/accounting.html',
+    'сотрудники': 'https://fix-online.sbis.ru/staff.html',
+    'контакты': 'https://fix-online.sbis.ru/contacts.html',
+    'календарь':'https://fix-online.sbis.ru/calendar.html',
+    'уц':'https://fix-online.sbis.ru/ca.html',
+    'телефонию':'https://fix-online.sbis.ru/tel.html',
+    'профиль':'https://fix-online.sbis.ru/myProfile.html',
+    'престо':'https://fix-online.sbis.ru/presto.html',
+    'сообщения':'https://fix-online.sbis.ru/contacts.html'
 };
 
 var SpeechHandler = function() {
@@ -27,9 +37,8 @@ var SpeechHandler = function() {
             var page_name = arguments[0].trim();
 
             if(pageUrls[page_name]){
-                Say('Перехожу в '+page_name,{voiceName:"Google русский"},function(){
-                    document.location.href = pageUrls[page_name];
-                });
+                Say('Перехожу в '+page_name);
+                document.location.href = pageUrls[page_name];
             } else {
                 Say('Раздел не найден.');
             }
@@ -55,14 +64,9 @@ var SpeechHandler = function() {
                          }
                      }
                  }),success: function(response){
-
-                     //console.log('response:',response); //раскоментируй, чтобы видеть ответ
-
                      if(response.result.d.length > 0){
 
                           var row = response.result.d[0];
-
-                         //console.log(row); //раскоментируй
 
                          if(row[6]){
                              console.log('Мобильный телефон '+row[1]+' '+row[6]);
@@ -78,6 +82,48 @@ var SpeechHandler = function() {
 
 
                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+
+          },
+          'внутренний номер': function () {
+              this._log(arguments);
+
+              jQuery.ajax({
+                  url:'https://fix-online.sbis.ru/service/',
+                  data: JSON.stringify({
+                      id:1,
+                      jsonrpc: "2.0",
+                      protocol: 3,
+                      method: "Персонал.СписокПерсонала",
+                      params:{
+                          ДопПоля: [],
+                          Сортировка: null,
+                          Навигация: null,
+                          Фильтр: {
+                              d: [arguments[0].trim(), "С разворотом", "Только листья"],
+                              s:[{n: "СтрокаПоиска", t: "Строка"}, {n: "Разворот", t: "Строка"}, {n: "ВидДерева", t: "Строка"}]
+                          }
+                      }
+                  }),success: function(response){
+                      if(response.result.d.length > 0){
+
+                          var row = response.result.d[0];
+
+                          console.log(response);
+
+//                          if(row[6]){
+//                              console.log('Мобильный телефон '+row[1]+' '+row[6]);
+//
+//                              Say('Мобильный телефон '+row[1]+' '+row[6]);
+//                          } else {
+//                              Say('Контактные данные '+row[1]+' не найдены');
+//                          }
+
+                      } else {
+                          console.log('Сотрудник не найден.');
+                      }
+
+
+                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 
           },
          'прочитать новость': function () {
