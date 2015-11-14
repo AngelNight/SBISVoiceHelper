@@ -35,7 +35,7 @@ var SpeechHandler = function() {
             companysearch(text);
          },
          'включи свою любимую песню': function(text){
-               window.open('https://www.youtube.com/embed/d6248C7uaNY?autoplay=1');
+               window.open('https://www.youtube.com/embed/eW4rDyJJL04?autoplay=1');
          },
          'добавить задачу': function (text){
             addTask(text);
@@ -195,7 +195,9 @@ var SpeechHandler = function() {
           'мне нравится': function(){
              this._log(arguments);
 
-           
+           var news_div4 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+           var id_n2 = news_div4.getAttribute('news_id');
+
             console.log('Ищу');
              jQuery.ajax({
                  url:getDomain()+'service/',
@@ -205,7 +207,7 @@ var SpeechHandler = function() {
                      protocol: 3,
                      method: "Новость.ПонравиласьНовостьВОнлайне",
                      params:{
-                        ИдО: "1526173"
+                        ИдО: id_n2
                          }
                      
                  }),success: function(response){
@@ -218,7 +220,7 @@ var SpeechHandler = function() {
 
 
                    var div_news = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news[0]).find(".icon-ThumbUp2.icon-done").click();
+                    jQuery(div_news[0]).find(".icon-ThumbUp.icon-done").click();
 
                     
 
@@ -229,8 +231,9 @@ var SpeechHandler = function() {
          'плохая новость': function(){
              this._log(arguments);
 
-           
-          
+           var news_div3 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+            var id_n1 = news_div3.getAttribute('news_id'); 
+
             console.log('Ищу');
              jQuery.ajax({
                  url:getDomain()+'service/',
@@ -240,7 +243,7 @@ var SpeechHandler = function() {
                      protocol: 3,
                      method: "Новость.НеПонравиласьНовостьВОнлайне",
                      params:{
-                        ИдО: "1526173"
+                        ИдО: id_n1
                          }
                      
                  }),success: function(response){
@@ -260,6 +263,19 @@ var SpeechHandler = function() {
                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 
          },
+
+         'открой комментарии':function(){
+
+                  var div_comm = jQuery('.news_as_link.ellipsisStartPage');
+                  jQuery(div_comm[0]).find(".root_title").click();
+
+         },
+
+         'закрой комментарии':function(){
+                jQuery(".sbisname-window-title-close").click();
+
+         },
+
 
          'отправить комментарий':function(p){
           if(!p) return;
