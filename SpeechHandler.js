@@ -283,15 +283,6 @@ var SpeechHandler = function() {
                      });
 
          },
-
-
-
-         'создать задачу': function () {
-            this._log(arguments);
-         },
-         'пока': function () {
-            rec.stop();
-         },
           'позвони': function(text){
               findUserByName(text.trim(),function(response){
 
