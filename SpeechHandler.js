@@ -174,9 +174,7 @@ var SpeechHandler = function() {
           'мне нравится': function(){
              this._log(arguments);
 
-           /* var div_news = document.getElementsByClassName('news_as_link ellipsisStartPage');
-            jQuery(div_news).find(".news_icons");
-            jQuery(div_news).click();*/
+           
             console.log('Ищу');
              jQuery.ajax({
                  url:'https://fix-online.sbis.ru/service/',
@@ -199,7 +197,7 @@ var SpeechHandler = function() {
 
 
                    var div_news = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news[0]).find(".icon-ThumbUp2").click();
+                    jQuery(div_news[0]).find(".icon-ThumbUp2.icon-done").click();
 
                     
 
@@ -235,8 +233,8 @@ var SpeechHandler = function() {
                     Say(ans);
 
 
-                    var div_news = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news[0]).find(".icon-ThumbUp2.icon-error").click();
+                    var div_news1 = jQuery('.news_as_link.ellipsisStartPage');
+                    jQuery(div_news1[0]).find(".icon-ThumbDown2.icon-error").click();
 
                     
 
