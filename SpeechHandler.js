@@ -30,8 +30,44 @@ var SpeechHandler = function() {
          'сколько времени': function (){
             Say(declOfTime());
          },
-         'отправить сообщение': function () {
-            alert("отправить сообщение");
+         'отправить сообщение': function (p) {
+             if(!p) return;
+
+             var tmpArg = p.split(' '),
+                 gName = [tmpArg[0], tmpArg[1]].join(' '),
+                 text = p.replace(name,'').trim();
+
+             findUserByName(gName ,function(response) {
+
+                 if(response)
+                 {
+                     var id = response[9],
+                         name = response[1];
+
+                     jQuery.ajax({
+                         url: 'https://fix-online.sbis.ru/service/',
+                         data: JSON.stringify({
+                             id: 1,
+                             jsonrpc: "2.0",
+                             protocol: 3,
+                             method: "Сообщение.Отправить",
+                             params: {
+                                 Диалог: null,
+                                 Документ: null,
+                                 ПолучателиКлиенты: [3],
+                                 ПолучателиЛица: [id],
+                                 Сообщение: null,
+                                 Текст: text,
+                                 Файлы: []
+                             }
+                         }), success: function (response) {
+                             Say('Сообщение отправлено ' + name + '   Само сообщение ' + text);
+                         }, dataType: "json", type: "post", contentType: 'application/json; charset=utf-8'
+                     });
+                 }
+                 else
+                     Say("Пользователь " + gName + " не найден!");
+             });
          },
          'перейти в': function (text) {
 
