@@ -6,9 +6,9 @@ function Say(utterance, options, callback) {
   if(!options) options = {voiceName:"Google русский"};
   console.log('Говорю: ' + utterance);
   if (callback)
-	chrome.runtime.sendMessage({utterance,options,callback}, function() {});
+	chrome.runtime.sendMessage([utterance,options,callback], function() {});
   else
-    chrome.runtime.sendMessage({utterance,options}, function() {});
+    chrome.runtime.sendMessage([utterance,options], function() {});
 
 }
 
@@ -24,11 +24,11 @@ if(bird){
    rec.interimResults = true;
    rec.lang = 'ru';
    rec.onstart = function () {
-      Say("Привет, хозяин");
+      //Say("Привет, хозяин");
 	  rec.isRunning = true;
    };
    rec.onend = function () {
-	  Say("До скорой встречи, хозяин");
+	  //Say("До скорой встречи, хозяин");
       rec.isRunning = false;
    };
    rec.onresult = function (event) {

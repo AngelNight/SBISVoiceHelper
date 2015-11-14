@@ -38,6 +38,8 @@ var SpeechHandler = function() {
 //                      }
 //                  });
 
+             console.log(arguments);
+
              jQuery.ajax({
                  url:'https://fix-online.sbis.ru/service/',
                  data: JSON.stringify({
@@ -50,7 +52,7 @@ var SpeechHandler = function() {
                          Сортировка: null,
                          Навигация: null,
                          Фильтр: {
-                             d: ["Демо", "С разворотом", "Только листья"],
+                             d: [arguments[0].trim(), "С разворотом", "Только листья"],
                              s:[{n: "СтрокаПоиска", t: "Строка"}, {n: "Разворот", t: "Строка"}, {n: "ВидДерева", t: "Строка"}]
                          }
                      }
@@ -64,7 +66,13 @@ var SpeechHandler = function() {
 
                          //console.log(row); //раскоментируй
 
-                          console.log('Мобильный телефон '+row[1]+' '+row[6]);
+                         if(row[6]){
+                             console.log('Мобильный телефон '+row[1]+' '+row[6]);
+
+                             Say('Мобильный телефон '+row[1]+' '+row[6]);
+                         } else {
+                             Say('Контактные данные '+row[1]+' не найдены');
+                         }
 
                       } else {
                           console.log('Сотрудник не найден.');
