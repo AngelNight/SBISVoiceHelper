@@ -1,8 +1,8 @@
 var DEBUG = 0,
     allow = true;
-
 // ключевые фразы помеченные знаком /*!DANGER!*/
 // не распознаются или распознаются с ошибками
+localStorage['isTired'] = '1';
 
 var pageUrls = {
     'документы': 'edo.html',
@@ -38,7 +38,21 @@ var SpeechHandler = function() {
                window.open('https://www.youtube.com/embed/eW4rDyJJL04?autoplay=1');
          },
          'добавить задачу': function (text){
-            addTask(text);
+             /*  chrome.storage.local.get('isTired', function(result) {
+                 console.log(result.isTired);
+             if (!result.isTired){
+                     addTask(text);
+             } else {
+             chrome.storage.local.set({'isTired': 0});
+                Say("Я слишком устала. Может быть позже");
+            }});*/
+             if (!localStorage['isTired']){
+                 addTask(text);
+             } else {
+                 localStorage['isTired'] = 0;
+                 Say("Я слишком устала. Может быть позже");
+             }
+
          },
          'как дела': function (){
             Say("У меня ничего нового");
