@@ -2,18 +2,24 @@ var DEBUG = 0,
     allow = true;
 
 var pageUrls = {
-   'документы': 'edo.html',
-   'задачи': 'mydoc.html',
-   'бизнес': 'contragents.html',
+    'документы': 'edo.html',
+    'задачи': 'mydoc.html',
+    'задаче': 'mydoc.html',
+    'бизнес': 'contragents.html',
     'учет': 'accounting.html',
     'сотрудники': 'staff.html',
     'контакты': 'contacts.html',
+    'контакте': 'contacts.html',
     'календарь':'calendar.html',
-    'уц':'ca.html',
-    'телефонию':'tel.html',
+    'уц':'ca.html', /*!DANGER!*/
+    'телефонию':'tel.html', /*!DANGER!*/
+    'телефоне': 'tel.html',
+    'телефонии':'tel.html',
     'профиль':'myProfile.html',
-    'престо':'presto.html',
-    'сообщения':'contacts.html'
+    'престо':'presto.html', /*!DANGER!*/
+    'сообщения':'contacts.html',
+    'сообщении':'contacts.html',
+    'сообщение':'contacts.html'
 };
 
 var SpeechHandler = function() {
@@ -136,7 +142,7 @@ var SpeechHandler = function() {
               });
 
           },
-         'прочитать новость': function () {
+         'прочитай новость': function () {
             this._log(arguments);
             console.log('Ищу');
              jQuery.ajax({
@@ -276,7 +282,7 @@ var SpeechHandler = function() {
          'пока': function () {
             rec.stop();
          },
-          'позвонить сотруднику': function(text){
+          'позвони': function(text){
               findUserByName(text.trim(),function(response){
 
                   if(response){
