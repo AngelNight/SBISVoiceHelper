@@ -21,6 +21,9 @@ var SpeechHandler = function() {
          'компания': function (text){
             companysearch(text);
          },
+         'добавь задачу': function (text){
+            addTask(text);
+         },
          'как дела': function (){
             Say("У меня ничего нового");
          },
@@ -37,8 +40,9 @@ var SpeechHandler = function() {
             var page_name = arguments[0].trim();
 
             if(pageUrls[page_name]){
-                Say('Перехожу в '+page_name);
-                document.location.href = pageUrls[page_name];
+                Say('Перехожу в '+page_name,{voiceName:"Google русский"},function(){
+                    document.location.href = pageUrls[page_name];
+                });
             } else {
                 Say('Раздел не найден.');
             }
@@ -64,9 +68,14 @@ var SpeechHandler = function() {
                          }
                      }
                  }),success: function(response){
+
+                     //console.log('response:',response); //раскоментируй, чтобы видеть ответ
+
                      if(response.result.d.length > 0){
 
                           var row = response.result.d[0];
+
+                         //console.log(row); //раскоментируй
 
                          if(row[6]){
                              console.log('Мобильный телефон '+row[1]+' '+row[6]);
@@ -82,48 +91,6 @@ var SpeechHandler = function() {
 
 
                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
-
-          },
-          'внутренний номер': function () {
-              this._log(arguments);
-
-              jQuery.ajax({
-                  url:'https://fix-online.sbis.ru/service/',
-                  data: JSON.stringify({
-                      id:1,
-                      jsonrpc: "2.0",
-                      protocol: 3,
-                      method: "Персонал.СписокПерсонала",
-                      params:{
-                          ДопПоля: [],
-                          Сортировка: null,
-                          Навигация: null,
-                          Фильтр: {
-                              d: [arguments[0].trim(), "С разворотом", "Только листья"],
-                              s:[{n: "СтрокаПоиска", t: "Строка"}, {n: "Разворот", t: "Строка"}, {n: "ВидДерева", t: "Строка"}]
-                          }
-                      }
-                  }),success: function(response){
-                      if(response.result.d.length > 0){
-
-                          var row = response.result.d[0];
-
-                          console.log(response);
-
-//                          if(row[6]){
-//                              console.log('Мобильный телефон '+row[1]+' '+row[6]);
-//
-//                              Say('Мобильный телефон '+row[1]+' '+row[6]);
-//                          } else {
-//                              Say('Контактные данные '+row[1]+' не найдены');
-//                          }
-
-                      } else {
-                          console.log('Сотрудник не найден.');
-                      }
-
-
-                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 
           },
          'прочитать новость': function () {
@@ -142,7 +109,7 @@ var SpeechHandler = function() {
 
       parse: function(text){
          text = (text.toLowerCase()).trim();
-         //if(DEBUG) Say(text);
+         if(DEBUG) Say(text);
          for( var handlerName in this._handlers ){
             if( text.indexOf(handlerName) + 1 ){
                this._log(handlerName);
@@ -197,6 +164,57 @@ function companysearch(text) {
          var result_str = "По вашему запросу найдена компания " + result.name + " в городе " + result.city
              + "основаная " + result.dob() + " с директором " + result.director + " и специализацией " + result.special;
          Say(result_str);
+      }
+
+   }
+}
+
+function addTask(text) {
+   var xhr = new XMLHttpRequest();
+   var json_text = JSON.stringify(
+       {"jsonrpc":"2.0","protocol":3,"method":"СлужЗап.Записать",
+          "params":{"Запись":{"s":[{"n":"@Документ","t":"Число целое"},
+             {"n":"Раздел","t":"Идентификатор","s":"Иерархия"},
+             {"n":"Раздел@","t":"Логическое","s":"Иерархия"},
+             {"n":"Раздел$","t":"Логическое","s":"Иерархия"},
+             {"n":"РазличныеДокументы.Информация","t":"Текст"},
+             {"n":"Подразделение.Раздел","t":"Идентификатор","s":"Иерархия"},
+             {"n":"Подразделение.Раздел@","t":"Логическое","s":"Иерархия"},
+             {"n":"Подразделение.Раздел$","t":"Логическое","s":"Иерархия"},
+             {"n":"ТипДокумента.Раздел","t":"Идентификатор","s":"Иерархия"},
+             {"n":"ТипДокумента.Раздел@","t":"Логическое","s":"Иерархия"},
+             {"n":"ТипДокумента.Раздел$","t":"Логическое","s":"Иерархия"},
+             {"n":"Регламент.Раздел","t":"Идентификатор","s":"Иерархия"},
+             {"n":"Регламент.Раздел@","t":"Логическое","s":"Иерархия"},
+             {"n":"Регламент.Раздел$","t":"Логическое","s":"Иерархия"},
+             {"n":"Контрагент.Раздел","t":"Идентификатор","s":"Иерархия"},
+             {"n":"Контрагент.Раздел@","t":"Логическое","s":"Иерархия"},
+             {"n":"Контрагент.Раздел$","t":"Логическое","s":"Иерархия"},
+             {"n":"ДокументНашаОрганизация.Контрагент.Раздел","t":"Идентификатор","s":"Иерархия"},
+             {"n":"ДокументНашаОрганизация.Контрагент.Раздел@","t":"Логическое","s":"Иерархия"},
+             {"n":"ДокументНашаОрганизация.Контрагент.Раздел$","t":"Логическое","s":"Иерархия"},
+             {"n":"РП.ИдСпискаРассылки","t":"Текст"},{"s":"Иерархия","t":"Идентификатор","n":"ПапкаДокументов"},
+             {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов@"},
+             {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов$"}],
+             "d":[1862030,[null],null,null,text,[62],true,null,[-4],null,null,[null],false,null,[null],null,null,[null],null,null,"14451157",[9556,"ПапкаДокументов"],false,false],"_type":"record","_key":1862030}},"id":1});
+
+   xhr.open('POST', 'https://online.sbis.ru/service/sbis-rpc-service300.dll', true);
+   xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+   xhr.send(json_text);
+
+   xhr.onreadystatechange = function () {
+      if (xhr.readyState != 4) return;
+
+      if (xhr.status != 200) {
+         // обработать ошибку
+         Say(xhr.status + ': ' + xhr.statusText);
+      } else {
+         try {
+            var information = JSON.parse(xhr.responseText);
+         } catch (e) {
+            Say("Некорректный ответ " + e.message);
+         }
+         Say("Задача с текстом "+text+" успешно добавлена");
       }
 
    }
