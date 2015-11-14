@@ -340,7 +340,7 @@ function companysearch(text) {
             {"n":"РазмерСтраницы","t":"Число целое"},{"n":"ЕстьЕще","t":"Логическое"}],
             "d":[0,20,true]}},"id":1});
 
-   xhr.open('POST', 'https://online.sbis.ru/service/sbis-rpc-service300.dll', true);
+   xhr.open('POST', getDomain()+'/sbis-rpc-service300.dll', true);
    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
    xhr.send(json_text);
 
