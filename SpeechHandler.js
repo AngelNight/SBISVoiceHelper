@@ -1,18 +1,18 @@
 var DEBUG = 1;
 
 var pageUrls = {
-   'документы': 'https://fix-online.sbis.ru/edo.html',
-   'задачи': 'https://fix-online.sbis.ru/mydoc.html',
-   'бизнес': 'https://fix-online.sbis.ru/contragents.html',
-    'учет': 'https://fix-online.sbis.ru/accounting.html',
-    'сотрудники': 'https://fix-online.sbis.ru/staff.html',
-    'контакты': 'https://fix-online.sbis.ru/contacts.html',
-    'календарь':'https://fix-online.sbis.ru/calendar.html',
-    'уц':'https://fix-online.sbis.ru/ca.html',
-    'телефонию':'https://fix-online.sbis.ru/tel.html',
-    'профиль':'https://fix-online.sbis.ru/myProfile.html',
-    'престо':'https://fix-online.sbis.ru/presto.html',
-    'сообщения':'https://fix-online.sbis.ru/contacts.html'
+   'документы': 'edo.html',
+   'задачи': 'mydoc.html',
+   'бизнес': 'contragents.html',
+    'учет': 'accounting.html',
+    'сотрудники': 'staff.html',
+    'контакты': 'contacts.html',
+    'календарь':'calendar.html',
+    'уц':'ca.html',
+    'телефонию':'tel.html',
+    'профиль':'myProfile.html',
+    'престо':'presto.html',
+    'сообщения':'contacts.html'
 };
 
 var SpeechHandler = function() {
@@ -40,9 +40,8 @@ var SpeechHandler = function() {
             var page_name = arguments[0].trim();
 
             if(pageUrls[page_name]){
-                Say('Перехожу в '+page_name,{voiceName:"Google русский"},function(){
-                    document.location.href = pageUrls[page_name];
-                });
+                Say('Перехожу в '+page_name);
+                document.location.href = getDomain()+pageUrls[page_name];
             } else {
                 Say('Раздел не найден.');
             }
@@ -51,46 +50,35 @@ var SpeechHandler = function() {
          'найти сотрудника': function () {
               this._log(arguments);
 
-             jQuery.ajax({
-                 url:'https://fix-online.sbis.ru/service/',
-                 data: JSON.stringify({
-                     id:1,
-                     jsonrpc: "2.0",
-                     protocol: 3,
-                     method: "Персонал.СписокПерсонала",
-                     params:{
-                         ДопПоля: [],
-                         Сортировка: null,
-                         Навигация: null,
-                         Фильтр: {
-                             d: [arguments[0].trim(), "С разворотом", "Только листья"],
-                             s:[{n: "СтрокаПоиска", t: "Строка"}, {n: "Разворот", t: "Строка"}, {n: "ВидДерева", t: "Строка"}]
-                         }
+             if(arguments.length == 0) return;
+             if(arguments[0] == '') return;
+
+             findUserByName(arguments[0].trim(),function(response){
+
+                 if(response.result.d.length > 0){
+
+                     var row = response.result.d[0];
+
+                     //console.log(row); //раскоментируй
+
+                     if(row[6]){
+                         console.log('Мобильный телефон '+row[1]+' '+row[6]);
+
+                         Say('Мобильный телефон '+row[1]+' '+row[6]);
+                     } else {
+                         Say('Контактные данные '+row[1]+' не найдены');
                      }
-                 }),success: function(response){
 
-                     //console.log('response:',response); //раскоментируй, чтобы видеть ответ
+                 } else {
+                     console.log('Сотрудник не найден.');
+                 }
+             });
 
-                     if(response.result.d.length > 0){
-
-                          var row = response.result.d[0];
-
-                         //console.log(row); //раскоментируй
-
-                         if(row[6]){
-                             console.log('Мобильный телефон '+row[1]+' '+row[6]);
-
-                             Say('Мобильный телефон '+row[1]+' '+row[6]);
-                         } else {
-                             Say('Контактные данные '+row[1]+' не найдены');
-                         }
-
-                      } else {
-                          console.log('Сотрудник не найден.');
-                      }
+          },
+          'внутренний номер': function () {
+              this._log(arguments);
 
 
-                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 
           },
          'прочитать новость': function () {
@@ -230,4 +218,41 @@ function declOfTime()
    minutes = minutes+" "+variants[1][ (minutes%100>4 && minutes%100<20)? 2 : cases[(minutes%10<5)?minutes%10:5] ];
    hours = hours+" "+variants[0][ (hours%100>4 && hours%100<20)? 2 : cases[(hours%10<5)?hours%10:5] ];
    return "Сейчас "+hours+" "+minutes;
+}
+
+function getDomain(){
+    var url = jQuery.trim(window.location.href);
+    if(url.search(/^https?\:\/\//) != -1)
+        url = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i, "");
+    else
+        url = url.match(/^([^\/?#]+)(?:[\/?#]|$)/i, "");
+
+    return 'https://'+url[1]+'/';
+}
+
+function findUserByName(name,callback){
+
+    if(!name) return;
+
+    jQuery.ajax({
+        url:getDomain()+'service/',
+        data: JSON.stringify({
+            id:1,
+            jsonrpc: "2.0",
+            protocol: 3,
+            method: "Персонал.СписокПерсонала",
+            params:{
+                ДопПоля: [],
+                Сортировка: null,
+                Навигация: null,
+                Фильтр: {
+                    d: [name, "С разворотом", "Только листья"],
+                    s:[{n: "СтрокаПоиска", t: "Строка"}, {n: "Разворот", t: "Строка"}, {n: "ВидДерева", t: "Строка"}]
+                }
+            }
+        }),success: function(response){
+
+            callback(response);
+
+        },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 }
