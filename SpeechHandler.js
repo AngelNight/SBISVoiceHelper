@@ -33,11 +33,10 @@ var SpeechHandler = function() {
          'отправить сообщение': function () {
             alert("отправить сообщение");
          },
-         'перейти в': function () {
-            this._log(arguments);
+         'перейти в': function (text) {
 
-            if(arguments.length == 0) return false;
-            var page_name = arguments[0].trim();
+            if(!text) return;
+            var page_name = text.trim();
 
             if(pageUrls[page_name]){
                 Say('Перехожу в '+page_name);
@@ -47,13 +46,11 @@ var SpeechHandler = function() {
             }
 
          },
-         'найти сотрудника': function () {
-              this._log(arguments);
+         'найти сотрудника': function (text) {
 
-             if(arguments.length == 0) return;
-             if(arguments[0] == '') return;
+             if(!text) return;
 
-             findUserByName(arguments[0].trim(),function(response){
+             findUserByName(text.trim(),function(response){
 
                  if(response.result.d.length > 0){
 
@@ -73,13 +70,11 @@ var SpeechHandler = function() {
              });
 
           },
-          'внутренний номер': function () {
-              this._log(arguments);
+          'внутренний номер': function (text) {
 
-              if(arguments.length == 0) return;
-              if(arguments[0] == '') return;
+              if(!text) return;
 
-              findUserByName(arguments[0].trim(),function(response){
+              findUserByName(text.trim(),function(response){
 
                   console.log(response);
 
@@ -88,9 +83,7 @@ var SpeechHandler = function() {
                       var row = response.result.d[0];
 
                       if(row[5]){
-                          console.log('Мобильный телефон '+row[1]+' '+row[5]);
-
-                          Say('Внутренний номер '+row[1]+' '+row[5]);
+                          Say('Внутренний номер '+row[1]+' '+row[5].toString().split('').join(' '));
                       } else {
                           Say('Внутренний номер сотрудника '+row[1]+' не найден.');
                       }
