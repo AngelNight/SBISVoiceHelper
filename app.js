@@ -7,13 +7,13 @@ function Say(utterance, callback) {
 
   chrome.runtime.sendMessage(utterance, callback);
     console.log('stop recording');
-    rec.stop();
+    if(rec.isRunning) rec.stop();
 
 }
 
 chrome.runtime.onMessage.addListener(function(request,sender,callback2) {
     console.log('start recording');
-    rec.start();
+    if(!rec.isRunning) rec.start();
 });
 
 
