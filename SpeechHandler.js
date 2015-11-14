@@ -88,20 +88,18 @@ var SpeechHandler = function() {
 
              findUserByName(text.trim(),function(response){
 
-                 if(response.result.d.length > 0){
+                 if(response){
 
-                     var row = response.result.d[0];
+                     if(response[6]){
+                         console.log('Мобильный телефон '+response[1]+' '+response[6]);
 
-                     if(row[6]){
-                         console.log('Мобильный телефон '+row[1]+' '+row[6]);
-
-                         Say('Мобильный телефон '+row[1]+' '+row[6]);
+                         Say('Мобильный телефон '+response[1]+' '+response[6]);
                      } else {
-                         Say('Контактные данные '+row[1]+' не найдены');
+                         Say('Контактные данные '+response[1]+' не найдены');
                      }
 
                  } else {
-                     console.log('Сотрудник не найден.');
+                     Say('Сотрудник не найден.');
                  }
              });
 
@@ -112,20 +110,18 @@ var SpeechHandler = function() {
 
               findUserByName(text.trim(),function(response){
 
-                  console.log(response);
+                  //console.log(response);
 
-                  if(response.result.d.length > 0){
+                  if(response){
 
-                      var row = response.result.d[0];
-
-                      if(row[5]){
-                          Say('Внутренний номер '+row[1]+' '+row[5].toString().split('').join(' '));
+                      if(response[5]){
+                          Say('Внутренний номер '+response[1]+' '+response[5].toString().split('').join(' '));
                       } else {
-                          Say('Внутренний номер сотрудника '+row[1]+' не найден.');
+                          Say('Внутренний номер сотрудника '+response[1]+' не найден.');
                       }
 
                   } else {
-                      console.log('Сотрудник не найден.');
+                      Say('Сотрудник не найден.');
                   }
               });
 
@@ -301,7 +297,11 @@ function findUserByName(name,callback){
             }
         }),success: function(response){
 
-            callback(response);
+            if(response.result.d.length > 0){
+                 callback(response.result.d[0]);
+            } else {
+                callback(null);
+            }
 
         },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 }
