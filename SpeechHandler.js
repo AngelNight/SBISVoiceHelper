@@ -1,4 +1,10 @@
 var DEBUG = 1;
+
+var pageUrls = {
+   'документы': 'https://fix-online.sbis.ru/edo.html',
+   'задачи': 'https://fix-online.sbis.ru/mydoc.html'
+};
+
 var SpeechHandler = function() {
    return {
       _handlers : {
@@ -16,29 +22,21 @@ var SpeechHandler = function() {
          },
          'перейти в': function () {
             this._log(arguments);
+
+            if(arguments.length == 0) return false;
+            var page_name = arguments[0].trim();
+
+            if(pageUrls[page_name]){
+                Say('Перехожу в '+page_name,{voiceName:"Google русский"},function(){
+                    document.location.href = pageUrls[page_name];
+                });
+            } else {
+                Say('Раздел не найден.');
+            }
+
          },
          'найти сотрудника': function () {
               this._log(arguments);
-
-              console.log('Ищу');
-
-//              var obj = new $ws.proto.BLObject("Персонал");
-//              obj.query('СписокПерсонала',{'СтрокаПоиска': 'Демо','Разворот':'С разворотом','ВидДерева':'Только листья'})
-//                  .addCallback(function(response){
-//                      console.log(response);
-//
-//                      if(response._data.length > 0){
-//
-//                          var row = response._data[0];
-//
-//                          console.log('Мобильный телефон '+row[1]+' '+row[6]);
-//
-//                      } else {
-//                          console.log('Сотрудник не найден.');
-//                      }
-//                  });
-
-             console.log(arguments);
 
              jQuery.ajax({
                  url:'https://fix-online.sbis.ru/service/',

@@ -5,10 +5,12 @@ function $(id){
 function Say(utterance, options, callback) {
   if(!options) options = {voiceName:"Google русский"};
   console.log('Говорю: ' + utterance);
-  if (callback)
-	chrome.runtime.sendMessage([utterance,options,callback], function() {});
-  else
-    chrome.runtime.sendMessage([utterance,options], function() {});
+
+  if (!callback){
+	callback = function(){};
+  }
+
+  chrome.runtime.sendMessage([utterance,options], callback);
 
 }
 
@@ -19,7 +21,8 @@ if(bird){
 
    // Google Web Speech API
    var rec = new webkitSpeechRecognition(),
-         sHadler = new SpeechHandler();
+         sHandler = new SpeechHandler();
+
    rec.continuous = true;
    rec.interimResults = true;
    rec.lang = 'ru';
@@ -34,7 +37,7 @@ if(bird){
    rec.onresult = function (event) {
       for (var i = event.resultIndex; i < event.results.length; ++i) {
          if (event.results[i].isFinal) {
-            sHadler.parse(event.results[i][0].transcript);
+            sHandler.parse(event.results[i][0].transcript);
          }
       }
    };
@@ -51,11 +54,6 @@ if(bird){
 
    // так работает в ie8
    bird.onclick = function(){
-      if( rec.isRunning ) {
-         rec.stop();
-      }
-      else {
-         rec.start();
-      }
+      if( rec.isRunning ) rec.stop(); else rec.start();
    };
 }
