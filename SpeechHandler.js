@@ -1,19 +1,28 @@
 var DEBUG = 0,
     allow = true;
 
+// ключевые фразы помеченные знаком /*!DANGER!*/
+// не распознаются или распознаются с ошибками
+
 var pageUrls = {
    'документы': 'edo.html',
    'задачи': 'mydoc.html',
+    'задаче': 'mydoc.html',
    'бизнес': 'contragents.html',
     'учет': 'accounting.html',
     'сотрудники': 'staff.html',
     'контакты': 'contacts.html',
+    'контакте': 'contacts.html',
     'календарь':'calendar.html',
-    'уц':'ca.html',
-    'телефонию':'tel.html',
+    'уц':'ca.html',             /*!DANGER!*/
+    'телефонию':'tel.html',     /*!DANGER!*/
+    'телефоне': 'tel.html',
+    'телефонии':'tel.html',
     'профиль':'myProfile.html',
-    'престо':'presto.html',
-    'сообщения':'contacts.html'
+    'престо':'presto.html',     /*!DANGER!*/
+    'сообщения':'contacts.html',
+    'сообщении':'contacts.html',
+    'сообщение':'contacts.html'
 };
 
 var SpeechHandler = function() {
@@ -43,7 +52,7 @@ var SpeechHandler = function() {
 
              var tmpArg = p.split(' '),
                  gName = [tmpArg[0], tmpArg[1]].join(' '),
-                 text = p.replace(name,'').trim();
+                 text = p.replace(gName,'').trim();
 
              findUserByName(gName ,function(response) {
 
