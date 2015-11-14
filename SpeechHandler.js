@@ -21,7 +21,7 @@ var SpeechHandler = function() {
          'компания': function (text){
             companysearch(text);
          },
-         'добавь задачу': function (text){
+         'добавить задачу': function (text){
             addTask(text);
          },
          'как дела': function (){
@@ -206,7 +206,7 @@ function addTask(text) {
              {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов$"}],
              "d":[1862030,[null],null,null,text,[62],true,null,[-4],null,null,[null],false,null,[null],null,null,[null],null,null,"14451157",[9556,"ПапкаДокументов"],false,false],"_type":"record","_key":1862030}},"id":1});
 
-   xhr.open('POST', 'https://online.sbis.ru/service/sbis-rpc-service300.dll', true);
+   xhr.open('POST', getDomain()+'/service/sbis-rpc-service300.dll', true);
    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
    xhr.send(json_text);
 
