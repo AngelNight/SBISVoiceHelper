@@ -502,7 +502,7 @@ function addTask(text) {
             Say(settext.status + ': ' + settext.statusText);
         } else {
             try {
-                Say("Задача с текстом "+text+" успешно добавлена");
+                //Say("Задача с текстом "+text+" успешно добавлена");
                 document.location.href = getDomain()+'mydoc.html';
             } catch (e) {
                 Say("Некорректный ответ " + e.message);
