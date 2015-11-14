@@ -95,6 +95,8 @@ var SpeechHandler = function() {
 
                  if(response){
 
+                     console.log(response);
+
                      if(response[6]){
                          console.log('Мобильный телефон '+response[1]+' '+response[6]);
 
@@ -250,8 +252,24 @@ var SpeechHandler = function() {
          'пока': function () {
             rec.stop();
          },
-          'позвонить сотруднику': function(userName){
-              callUser(userName);
+          'позвонить сотруднику': function(text){
+              findUserByName(text.trim(),function(response){
+
+                  if(response){
+
+                      console.log(response);
+
+                      if(response[9]){
+                          console.log('Вызов '+response[1]);
+                          callUser(response[9]);
+
+                          Say('Звоню '+response[1]);
+                      }
+
+                  } else {
+                      Say('Сотрудник не найден.');
+                  }
+              });
           }
       },
       _log: function(text){
@@ -443,7 +461,7 @@ function createGUID() {
     return d() + d() + "-" + d() + "-" + d() + "-" + d() + "-" + d() + d() + d();
 }
 
-function callUser(userName){
-    var url = '/webrtc/static/window.html#room=' + createGUID() + '&toInvite=861523&video=true';
+function callUser(userId){
+    var url = '/webrtc/static/window.html#room=' + createGUID() + '&{"faceId":'+userId+',"clientId":3}&video=true';
     window.open(url, '', 'width=1110,height=832,top=52,left=405,target=window');
 }
