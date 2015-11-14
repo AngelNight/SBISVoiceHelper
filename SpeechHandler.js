@@ -1,4 +1,5 @@
-var DEBUG = 1;
+var DEBUG = 0,
+    allow = true;
 
 var pageUrls = {
    'документы': 'edo.html',
@@ -18,6 +19,10 @@ var pageUrls = {
 var SpeechHandler = function() {
    return {
       _handlers : {
+          'привет': function(text) {
+              console.log('hi!');
+              allow = true;
+          },
          'компания': function (text){
             companysearch(text);
          },
@@ -142,7 +147,12 @@ var SpeechHandler = function() {
 
       parse: function(text){
          text = (text.toLowerCase()).trim();
+
+         console.log(text);
          if(DEBUG) Say(text);
+
+         //if(!allow) return false;
+
          for( var handlerName in this._handlers ){
             if( text.indexOf(handlerName) + 1 ){
                this._log(handlerName);
@@ -150,6 +160,8 @@ var SpeechHandler = function() {
                break;
             }
          }
+
+         //allow = false;
       }
    };
 };
