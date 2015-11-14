@@ -222,8 +222,6 @@ var SpeechHandler = function() {
 
          },
 
-
-
          'плохая новость': function(){
              this._log(arguments);
 
@@ -375,7 +373,7 @@ function companysearch(text) {
             'director': information[24] + " " + information[25] + " " + information[26],
             'special': information[27]
          };
-         var result_str = "По вашему запросу найдена компания " + result.name + " в городе " + result.city
+         var result_str = "По вашему запросу найдена организация " + result.name + " в городе " + result.city
              + "основаная " + result.dob() + " с директором " + result.director + " и специализацией " + result.special;
          Say(result_str);
       }
@@ -384,55 +382,117 @@ function companysearch(text) {
 }
 
 function addTask(text) {
-   var xhr = new XMLHttpRequest();
-   var json_text = JSON.stringify(
-       {"jsonrpc":"2.0","protocol":3,"method":"СлужЗап.Записать",
-          "params":{"Запись":{"s":[{"n":"@Документ","t":"Число целое"},
-             {"n":"Раздел","t":"Идентификатор","s":"Иерархия"},
-             {"n":"Раздел@","t":"Логическое","s":"Иерархия"},
-             {"n":"Раздел$","t":"Логическое","s":"Иерархия"},
-             {"n":"РазличныеДокументы.Информация","t":"Текст"},
-             {"n":"Подразделение.Раздел","t":"Идентификатор","s":"Иерархия"},
-             {"n":"Подразделение.Раздел@","t":"Логическое","s":"Иерархия"},
-             {"n":"Подразделение.Раздел$","t":"Логическое","s":"Иерархия"},
-             {"n":"ТипДокумента.Раздел","t":"Идентификатор","s":"Иерархия"},
-             {"n":"ТипДокумента.Раздел@","t":"Логическое","s":"Иерархия"},
-             {"n":"ТипДокумента.Раздел$","t":"Логическое","s":"Иерархия"},
-             {"n":"Регламент.Раздел","t":"Идентификатор","s":"Иерархия"},
-             {"n":"Регламент.Раздел@","t":"Логическое","s":"Иерархия"},
-             {"n":"Регламент.Раздел$","t":"Логическое","s":"Иерархия"},
-             {"n":"Контрагент.Раздел","t":"Идентификатор","s":"Иерархия"},
-             {"n":"Контрагент.Раздел@","t":"Логическое","s":"Иерархия"},
-             {"n":"Контрагент.Раздел$","t":"Логическое","s":"Иерархия"},
-             {"n":"ДокументНашаОрганизация.Контрагент.Раздел","t":"Идентификатор","s":"Иерархия"},
-             {"n":"ДокументНашаОрганизация.Контрагент.Раздел@","t":"Логическое","s":"Иерархия"},
-             {"n":"ДокументНашаОрганизация.Контрагент.Раздел$","t":"Логическое","s":"Иерархия"},
-             {"n":"РП.ИдСпискаРассылки","t":"Текст"},{"s":"Иерархия","t":"Идентификатор","n":"ПапкаДокументов"},
-             {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов@"},
-             {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов$"}],
-             "d":[1862030,[null],null,null,text,[62],true,null,[-4],null,null,[null],false,null,[null],null,null,[null],null,null,"14451157",[9556,"ПапкаДокументов"],false,false],"_type":"record","_key":1862030}},"id":1});
+    text = text.trim();
+    var empl;
+    var name = text.split(' ')[0]+" "+ text.split(' ')[1];
 
-   xhr.open('POST', getDomain()+'/service/sbis-rpc-service300.dll', true);
-   xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-   xhr.send(json_text);
+    alert(name);
+    findUserByName(name,function(response) {
+        if (response) {
+            console.log(response[9]);
+            empl = response[9];
+            getnumber.send(json_number);
+        } else {
+            console.log('Сотрудник не найден.');
+        }
+    });
+    var getnumber = new XMLHttpRequest();
+    var settext = new XMLHttpRequest();
+    var setempl = new XMLHttpRequest();
+    var json_number = JSON.stringify({"jsonrpc":"2.0","protocol":3,"method":"СлужЗап.Создать","params":{"Фильтр":{"d":["9556,ПапкаДокументов","-1",false,"-1","-1","Все","true","С узлами и листьями","ПапкаДокументов","Без разворота",true,"Название",false,"ПорНомер","true","true","168","15","js!SBIS3.EDO.Task","СлужЗап","9556",true],"s":[{"n":"ПапкаДокументов","t":"Строка"},{"n":"ФильтрПоКраткомуСостоянию","t":"Строка"},{"n":"ФильтрУдаленные","t":"Логическое"},{"n":"ФильтрАвторИлиОтвОтдел","t":"Строка"},{"n":"ФильтрАвторИлиОтветственный","t":"Строка"},{"n":"ФильтрВладелец","t":"Строка"},{"n":"ФильтрРассчитатьВД","t":"Строка"},{"n":"ВидДерева","t":"Строка"},{"n":"HierarchyField","t":"Строка"},{"n":"Разворот","t":"Строка"},{"n":"ПутьКУзлу","t":"Логическое"},{"n":"ЗаголовокИерархии","t":"Строка"},{"n":"_ЕстьДочерние","t":"Логическое"},{"n":"__ПорНомер__","t":"Строка"},{"n":"ПапкаСкрытьНепрочитанные","t":"Строка"},{"n":"ПоказИерархии","t":"Строка"},{"n":"Регламент","t":"Строка"},{"n":"ТипДокумента","t":"Строка"},{"n":"ТипДокумента.ИмяДиалога","t":"Строка"},{"n":"ТипДокумента.ИмяОбъекта","t":"Строка"},{"n":"ФильтрПапкаДокументовДляСоздания","t":"Строка"},{"n":"ВызовИзБраузера","t":"Логическое"}]},"ИмяМетода":"СлужЗап.Список"},"id":1});
+    var json_text = JSON.stringify(
+        {"jsonrpc":"2.0","protocol":3,"method":"СлужЗап.Записать",
+            "params":{"Запись":{"s":[{"n":"@Документ","t":"Число целое"},
+                {"n":"Раздел","t":"Идентификатор","s":"Иерархия"},
+                {"n":"Раздел@","t":"Логическое","s":"Иерархия"},
+                {"n":"Раздел$","t":"Логическое","s":"Иерархия"},
+                {"n":"РазличныеДокументы.Информация","t":"Текст"},
+                {"n":"Подразделение.Раздел","t":"Идентификатор","s":"Иерархия"},
+                {"n":"Подразделение.Раздел@","t":"Логическое","s":"Иерархия"},
+                {"n":"Подразделение.Раздел$","t":"Логическое","s":"Иерархия"},
+                {"n":"ТипДокумента.Раздел","t":"Идентификатор","s":"Иерархия"},
+                {"n":"ТипДокумента.Раздел@","t":"Логическое","s":"Иерархия"},
+                {"n":"ТипДокумента.Раздел$","t":"Логическое","s":"Иерархия"},
+                {"n":"Регламент.Раздел","t":"Идентификатор","s":"Иерархия"},
+                {"n":"Регламент.Раздел@","t":"Логическое","s":"Иерархия"},
+                {"n":"Регламент.Раздел$","t":"Логическое","s":"Иерархия"},
+                {"n":"Контрагент.Раздел","t":"Идентификатор","s":"Иерархия"},
+                {"n":"Контрагент.Раздел@","t":"Логическое","s":"Иерархия"},
+                {"n":"Контрагент.Раздел$","t":"Логическое","s":"Иерархия"},
+                {"n":"ДокументНашаОрганизация.Контрагент.Раздел","t":"Идентификатор","s":"Иерархия"},
+                {"n":"ДокументНашаОрганизация.Контрагент.Раздел@","t":"Логическое","s":"Иерархия"},
+                {"n":"ДокументНашаОрганизация.Контрагент.Раздел$","t":"Логическое","s":"Иерархия"},
+                {"n":"РП.ИдСпискаРассылки","t":"Текст"},
+                {"s":"Иерархия","t":"Идентификатор","n":"ПапкаДокументов"},
+                {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов@"},
+                {"s":"Иерархия","t":"Логическое","n":"ПапкаДокументов$"}],
+                "d":[number,[null],null,null,text,[62],true,null,[-4],null,null,[null],false,null,[null],null,null,[null],null,null,"14451157",[9556,"ПапкаДокументов"],false,false],"_type":"record","_key":1862082}},"id":1});
 
-   xhr.onreadystatechange = function () {
-      if (xhr.readyState != 4) return;
+    getnumber.open('POST', getDomain()+'/service/sbis-rpc-service300.dll', true);
+    settext.open('POST', getDomain()+'/service/sbis-rpc-service300.dll', true);
+    setempl.open('POST', getDomain()+'/service/sbis-rpc-service300.dll', true);
 
-      if (xhr.status != 200) {
-         // обработать ошибку
-         Say(xhr.status + ': ' + xhr.statusText);
-      } else {
-         try {
-            var information = JSON.parse(xhr.responseText);
-         } catch (e) {
-            Say("Некорректный ответ " + e.message);
-         }
-         Say("Задача с текстом "+text+" успешно добавлена");
-      }
+    getnumber.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    settext.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    setempl.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
-   }
+    getnumber.onreadystatechange = function () {
+        if (getnumber.readyState != 4) return;
+
+        if (getnumber.status != 200) {
+            // обработать ошибку
+            Say(getnumber.status + ': ' + getnumber.statusText);
+        } else {
+            try {
+                console.log(getnumber.responseText);
+                var information = JSON.parse(getnumber.responseText);
+                var number = information.result.d[0];
+                var json_empl = JSON.stringify({"jsonrpc":"2.0","protocol":3,"method":"ФункциональнаяОбласть.ЗаписатьЗонуОтветственностиИИсполнителей","params":{"Документ":number,"ЗонаОтветственности":null,"Исполнители":[empl]},"id":1});
+                setempl.send(json_empl);
+            } catch (e) {
+                Say("Некорректный ответ " + e.message);
+            }
+        }};
+
+    setempl.onreadystatechange = function () {
+
+        if (setempl.readyState != 4) return;
+
+        if (setempl.status != 200) {
+            // обработать ошибку
+            Say(setempl.status + ': ' + setempl.statusText);
+        } else {
+            try {
+                settext.send(json_text);
+                console.log("Назначен работник");
+            } catch (e) {
+                Say("Некорректный ответ " + e.message);
+            }
+        }
+
+    };
+
+    settext.onreadystatechange = function () {
+
+        if (settext.readyState != 4) return;
+
+        if (settext.status != 200) {
+            // обработать ошибку
+            Say(settext.status + ': ' + settext.statusText);
+        } else {
+            try {
+                window.location = getDomain()+'mydoc.html';
+                Say("Задача с текстом "+text+" успешно добавлена");
+            } catch (e) {
+                Say("Некорректный ответ " + e.message);
+            }
+
+        }
+
+    }
+
 }
+
 
 function declOfTime()
 {
