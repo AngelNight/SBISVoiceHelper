@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(function(request) {
-	if(request.callback){
-		chrome.tts.speak(request.utterance,request.options,request.callback);
+	if(request[2]){
+		chrome.tts.speak(request[0],request[1],request[2]);
 	}else{
-		chrome.tts.speak(request.utterance,request.options);
+		chrome.tts.speak(request[0],request[1]);
 	}
 });
