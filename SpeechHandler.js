@@ -503,7 +503,7 @@ function addTask(text) {
         } else {
             try {
                 Say("Задача с текстом "+text+" успешно добавлена");
-                //window.location = getDomain()+'mydoc.html';
+                document.location.href = getDomain()+'mydoc.html';
             } catch (e) {
                 Say("Некорректный ответ " + e.message);
             }
