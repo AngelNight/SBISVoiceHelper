@@ -6,7 +6,6 @@ function Say(utterance, callback) {
   }
 
   chrome.runtime.sendMessage(utterance, callback);
-
     console.log('stop recording');
     rec.stop();
 
@@ -31,11 +30,11 @@ if(bird){
    rec.interimResults = true;
    rec.lang = 'ru';
    rec.onstart = function () {
-      //Say("Привет, хозяин");
+      Say("Привет, господин");
 	  rec.isRunning = true;
    };
    rec.onend = function () {
-	  //Say("До скорой встречи, хозяин");
+	  Say("До скорой встречи, господин");
       rec.isRunning = false;
    };
    rec.onresult = function (event) {
@@ -44,16 +43,6 @@ if(bird){
             sHandler.parse(event.results[i][0].transcript);
          }
       }
-   };
-   
-   rec.onerror = function(event) {
-      if (event.error == 'no-speech') {
-         Say("Пожалуйста, не молчите. Проверьте настройки микрофона");
-      }
-      if (event.error == 'audio-capture') {
-         Say("Проблемы с записью голоса");
-      }
-
    };
 
    // так работает в ie8
