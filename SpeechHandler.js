@@ -98,7 +98,10 @@ var SpeechHandler = function() {
          },
          'пока': function () {
             rec.stop();
-         }
+         },
+          'позвонить сотруднику': function(userName){
+              callUser(userName);
+          }
       },
       _log: function(text){
          console.log(text);
@@ -268,4 +271,21 @@ function findUserByName(name,callback){
             }
 
         },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+}
+
+function createGUID() {
+    var a = 0
+      , b = 0
+      , c = (new Date).getTime().toString(16);
+    c = "000000000000".substr(0, 12 - c.length) + c;
+    var d = function() {
+        return (c.substring(b, b += a++ % 2 ? 2 : 1) + (65536 * (1 + Math.random()) | 0).toString(16)).substring(0, 4)
+    }
+    ;
+    return d() + d() + "-" + d() + "-" + d() + "-" + d() + "-" + d() + d() + d();
+}
+
+function callUser(userName){
+    var url = '/webrtc/static/window.html#room=' + createGUID() + '&toInvite=861523&video=true';
+    window.open(url, '', 'width=1110,height=832,top=52,left=405,target=window');
 }
