@@ -26,6 +26,9 @@ var SpeechHandler = function() {
          'компания': function (text){
             companysearch(text);
          },
+         'включи свою любимую песню': function(text){
+               window.open('https://www.youtube.com/embed/d6248C7uaNY?autoplay=1');
+         },
          'добавить задачу': function (text){
             addTask(text);
          },
@@ -255,7 +258,7 @@ var SpeechHandler = function() {
 
                   if(response){
 
-                      console.log(response);
+                      //console.log(response);
 
                       if(response[9]){
                           console.log('Вызов '+response[1]);
