@@ -300,7 +300,7 @@ var SpeechHandler = function() {
          for( var handlerName in this._handlers ){
             if( text.indexOf(handlerName) + 1 ){
                this._log(handlerName);
-               this._handlers[handlerName].call(this, text.replace(handlerName, ''));
+               this._handlers[handlerName].call(this, text.replace(handlerName, '').trim());
                break;
             }
          }
