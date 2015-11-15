@@ -297,7 +297,7 @@ var SpeechHandler = function() {
          },
 
 
-         'отправь комментарий':function(p){
+         'отправить комментарий':function(p){
           if(!p) return;
            var text1 = p.replace(name,'').trim();
 
