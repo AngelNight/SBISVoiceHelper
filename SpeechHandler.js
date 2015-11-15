@@ -242,6 +242,9 @@ var SpeechHandler = function() {
 
          'отправить комментарий':function(p){
           if(!p) return;
+
+          var news_div3 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+          var id_n1 = news_div3.getAttribute('news_id');
            var text1 = p.replace(name,'').trim();
 
            jQuery.ajax({
@@ -253,7 +256,7 @@ var SpeechHandler = function() {
                              method: "НовостьКомментарий.СоздатьКомментарий",
                              params: {
                                 GUID: "466ca8fb-d88e-4125-8ff1-d03f7be8bd5b",
-                                ИдНовости: "1526173",
+                                ИдНовости: id_n1,
                                 Текст: text1
                              }
                          }), success: function (response) {
