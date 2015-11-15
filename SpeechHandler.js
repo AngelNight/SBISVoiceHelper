@@ -192,7 +192,7 @@ var SpeechHandler = function() {
 
                      if(response.result.d.length > 0){
 
-                          var row =response.result.d[36];
+                          var row =response.result.d[36].substr(0, 150);
 
                           console.log(row);
                           Say(row);
