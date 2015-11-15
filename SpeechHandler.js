@@ -255,7 +255,7 @@ var SpeechHandler = function() {
                              protocol: 3,
                              method: "НовостьКомментарий.СоздатьКомментарий",
                              params: {
-                                GUID: "466ca8fb-d88e-4125-8ff1-d03f7be8bd5b",
+                                GUID: "cb37dc0d-21a6-4bba-9a53-bca1ede8e513",
                                 ИдНовости: id_n1,
                                 Текст: text1
                              }
