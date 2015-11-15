@@ -2,7 +2,6 @@ var DEBUG = 0,
     allow = true;
 // ключевые фразы помеченные знаком /*!DANGER!*/
 // не распознаются или распознаются с ошибками
-localStorage['isTired'] = '1';
 
 var pageUrls = {
     'документы': 'edo.html',
@@ -46,7 +45,7 @@ var SpeechHandler = function() {
              chrome.storage.local.set({'isTired': 0});
                 Say("Я слишком устала. Может быть позже");
             }});*/
-             if (!localStorage['isTired']){
+             if (localStorage['isTired'] == 0){
                  addTask(text);
              } else {
                  localStorage['isTired'] = 0;

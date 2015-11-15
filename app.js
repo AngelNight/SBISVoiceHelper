@@ -1,3 +1,5 @@
+if(typeof(localStorage['isTired']) == 'undefined') localStorage['isTired'] = 1;
+
 function Say(utterance, callback) {
   console.log('Говорю: ' + utterance);
 
