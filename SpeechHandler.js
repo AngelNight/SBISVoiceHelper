@@ -193,7 +193,7 @@ var SpeechHandler = function() {
 
                      if(response.result.d.length > 0){
 
-                          var row =response.result.d[36];
+                          var row =response.result.d[33];
 
                           console.log(row);
                           Say(row);
@@ -221,8 +221,12 @@ var SpeechHandler = function() {
                      protocol: 3,
                      method: "Новость.ПонравиласьНовостьВОнлайне",
                      params:{
-                        ИдО: id_n2
+                        ИдО: id_n2,
+                        Фильтр: {
+                          d: [id_n2, 1, 0],
+                          s:[{n: "ИдО", t: "Число целое"}, {n: "likes", t: "Число целое"}, {n: "dislikes", t: "Число целое"}]
                          }
+                       }
                      
                  }),success: function(response){
                      
@@ -234,9 +238,12 @@ var SpeechHandler = function() {
 
 
                    var div_news = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news[0]).find(".icon-ThumbUp.icon-done").click();
+                    jQuery(div_news[0]).find('.icon-ThumbUp').click();
+                    jQuery(div_news[0]).find('.icon-ThumbUp2').click();
+                
 
-                    
+                  var news = jQuery('.news_icons');
+                  var news_1 = jQuery(news[1]).find('.news_detail.news_icons_text');
 
                  },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
 
