@@ -208,79 +208,22 @@ var SpeechHandler = function() {
           'мне нравится': function(){
              this._log(arguments);
 
-           var news_div4 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
-           var id_n2 = news_div4.getAttribute('news_id');
-
-            console.log('Ищу');
-             jQuery.ajax({
-                 url:getDomain()+'service/',
-                 data: JSON.stringify({
-                     id:1,
-                     jsonrpc: "2.0",
-                     protocol: 3,
-                     method: "Новость.ПонравиласьНовостьВОнлайне",
-                     params:{
-                        ИдО: id_n2,
-                        Фильтр: {
-                          d: [id_n2, 1, 0],
-                          s:[{n: "ИдО", t: "Число целое"}, {n: "likes", t: "Число целое"}, {n: "dislikes", t: "Число целое"}]
-                         }
-                       }
-                     
-                 }),success: function(response){
-                     
-
-                     console.log('response:',response); //раскоментируй, чтобы видеть ответ
-                     
-                    var ans = 'Мне нравится ';
-                    Say(ans);
-
-
-                   var div_news = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news[0]).find('.icon-ThumbUp').click();
-                    jQuery(div_news[0]).find('.icon-ThumbUp2').click();
-                
-
-                  var news = jQuery('.news_icons');
-                  var news_1 = jQuery(news[1]).find('.news_detail.news_icons_text');
-
-                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+          var news = $('.news-PreprocessorNews-main_page tr').eq(0);
+          var el = news.find('.news_icons').eq(1);
+          var count = parseInt(el.find('.news_icons_text').text()) || 0;
+          el.find('.icon-16').click();
+          setTimeout(function(){el.find('.news_icons_text').text( count + 1 );},1500);
 
          },
 
          'плохая новость': function(){
              this._log(arguments);
 
-           var news_div3 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
-            var id_n1 = news_div3.getAttribute('news_id'); 
-
-            console.log('Ищу');
-             jQuery.ajax({
-                 url:getDomain()+'service/',
-                 data: JSON.stringify({
-                     id:1,
-                     jsonrpc: "2.0",
-                     protocol: 3,
-                     method: "Новость.НеПонравиласьНовостьВОнлайне",
-                     params:{
-                        ИдО: id_n1
-                         }
-                     
-                 }),success: function(response){
-                     
-
-                     console.log('response:',response); //раскоментируй, чтобы видеть ответ
-                     
-                    var ans = 'Мне не нравится ';
-                    Say(ans);
-
-
-                    var div_news1 = jQuery('.news_as_link.ellipsisStartPage');
-                    jQuery(div_news1[0]).find(".icon-ThumbDown2.icon-error").click();
-
-                    
-
-                 },dataType:"json",type:"post",contentType: 'application/json; charset=utf-8'});
+          var news = $('.news-PreprocessorNews-main_page tr').eq(0);
+          var el = news.find('.news_icons').eq(0);
+          var count = parseInt(el.find('.news_icons_text').text()) || 0;
+          el.find('.icon-16').click();
+          setTimeout(function(){el.find('.news_icons_text').text( count + 1 );},1500);
 
          },
 
@@ -297,8 +240,11 @@ var SpeechHandler = function() {
          },
 
 
-         'отправь комментарий':function(p){
+         'отправить комментарий':function(p){
           if(!p) return;
+
+          var news_div3 = document.getElementsByClassName('news_as_link ellipsisStartPage')[0];
+          var id_n1 = news_div3.getAttribute('news_id');
            var text1 = p.replace(name,'').trim();
 
            jQuery.ajax({
@@ -310,7 +256,7 @@ var SpeechHandler = function() {
                              method: "НовостьКомментарий.СоздатьКомментарий",
                              params: {
                                 GUID: "466ca8fb-d88e-4125-8ff1-d03f7be8bd5b",
-                                ИдНовости: "1526173",
+                                ИдНовости: id_n1,
                                 Текст: text1
                              }
                          }), success: function (response) {
