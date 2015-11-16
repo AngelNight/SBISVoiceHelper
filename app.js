@@ -1,3 +1,24 @@
+if(typeof(localStorage['isTired']) == 'undefined') localStorage['isTired'] = 1;
+
+function Say(utterance, callback) {
+  console.log('Говорю: ' + utterance);
+
+  if (!callback){
+	callback = function(){ };
+  }
+
+  chrome.runtime.sendMessage(utterance, callback);
+    console.log('stop recording');
+    if(rec.isRunning) rec.stop();
+
+}
+
+chrome.runtime.onMessage.addListener(function(request,sender,callback2) {
+    console.log('start recording');
+    if(!rec.isRunning) rec.start();
+});
+
+
 var bird = document.getElementById('logoPtica');
 if(bird){
    bird.className += 'bird icon-32 icon-Microphone icon-primary';
@@ -5,31 +26,29 @@ if(bird){
 
    // Google Web Speech API
    var rec = new webkitSpeechRecognition(),
-         sHadler = new SpeechHandler();
+         sHandler = new SpeechHandler();
+
    rec.continuous = true;
    rec.interimResults = true;
    rec.lang = 'ru';
    rec.onstart = function () {
-      rec.isRunning = true;
+      //Say("Привет, хозяин");
+	  rec.isRunning = true;
    };
    rec.onend = function () {
+	  //Say("До скорой встречи, хозяин");
       rec.isRunning = false;
    };
    rec.onresult = function (event) {
       for (var i = event.resultIndex; i < event.results.length; ++i) {
          if (event.results[i].isFinal) {
-            sHadler.parse(event.results[i][0].transcript);
+            sHandler.parse(event.results[i][0].transcript);
          }
       }
    };
 
    // так работает в ie8
    bird.onclick = function(){
-      if( rec.isRunning ) {
-         rec.stop();
-      }
-      else {
-         rec.start();
-      }
+      if( rec.isRunning ) rec.stop(); else rec.start();
    };
 }
